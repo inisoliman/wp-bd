@@ -1,0 +1,249 @@
+/* Modern Dark Mode for Bible Plugin */
+
+:root {
+    --dark-bg-primary: #0f172a;
+    --dark-bg-secondary: #1e293b;
+    --dark-bg-tertiary: #334155;
+    --dark-text-primary: #f8fafc;
+    --dark-text-secondary: #cbd5e1;
+    --dark-text-muted: #94a3b8;
+    --dark-border: #334155;
+    --dark-border-hover: #475569;
+    --dark-primary: #3b82f6;
+    --dark-primary-hover: #2563eb;
+    --dark-accent: #f59e0b;
+}
+
+/* Dark Mode Base */
+body.dark-mode {
+    background: linear-gradient(135deg, var(--dark-bg-primary) 0%, #1e293b 100%);
+    color: var(--dark-text-primary);
+    transition: all 0.3s ease;
+}
+
+/* Dark Mode Content Area */
+body.dark-mode .bible-content-area {
+    background: var(--dark-bg-secondary);
+    border: 1px solid var(--dark-border);
+    color: var(--dark-text-primary);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+}
+
+/* Dark Mode Controls */
+body.dark-mode .bible-controls {
+    background: linear-gradient(135deg, var(--dark-bg-tertiary) 0%, var(--dark-bg-secondary) 100%);
+    border-color: var(--dark-border);
+}
+
+/* Dark Mode Buttons */
+body.dark-mode .bible-control-button {
+    background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-primary-hover) 100%);
+    color: var(--dark-text-primary);
+    border: 1px solid var(--dark-border);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+}
+
+body.dark-mode .bible-control-button:hover {
+    background: linear-gradient(135deg, var(--dark-primary-hover) 0%, #1d4ed8 100%);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+    color: var(--dark-text-primary);
+}
+
+/* Dark Mode Selection Controls */
+body.dark-mode .bible-selection-controls {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .bible-select {
+    background: var(--dark-bg-secondary);
+    color: var(--dark-text-primary);
+    border-color: var(--dark-border);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23cbd5e1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+body.dark-mode .bible-select:focus {
+    border-color: var(--dark-primary);
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.2);
+}
+
+body.dark-mode .bible-select:hover {
+    border-color: var(--dark-border-hover);
+}
+
+/* Dark Mode Verses */
+body.dark-mode .verse-text {
+    background: var(--dark-bg-secondary);
+    border-color: var(--dark-border);
+    border-left-color: var(--dark-primary);
+    color: var(--dark-text-primary);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+}
+
+body.dark-mode .verse-text:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+}
+
+body.dark-mode .verse-number {
+    background: var(--dark-primary);
+    color: var(--dark-text-primary);
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.3);
+}
+
+body.dark-mode .verse-number:hover {
+    background: var(--dark-primary-hover);
+    color: var(--dark-text-primary);
+}
+
+body.dark-mode .verse-reference-link {
+    color: var(--dark-text-secondary);
+}
+
+body.dark-mode .verse-reference-link:hover {
+    color: var(--dark-primary);
+    background: var(--dark-bg-tertiary);
+}
+
+/* Dark Mode Navigation */
+body.dark-mode .chapter-navigation {
+    border-top-color: var(--dark-border);
+}
+
+body.dark-mode .chapter-navigation a {
+    background: var(--dark-bg-secondary);
+    color: var(--dark-text-primary);
+    border-color: var(--dark-border);
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.3);
+}
+
+body.dark-mode .chapter-navigation a:hover {
+    background: var(--dark-primary);
+    border-color: var(--dark-primary);
+    color: var(--dark-text-primary);
+    box-shadow: 0 6px 10px -2px rgb(0 0 0 / 0.4);
+}
+
+/* Dark Mode Search */
+body.dark-mode .bible-search-form {
+    background: linear-gradient(135deg, var(--dark-bg-tertiary) 0%, var(--dark-bg-secondary) 100%);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .bible-search-input {
+    background: var(--dark-bg-secondary);
+    color: var(--dark-text-primary);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .bible-search-input:focus {
+    border-color: var(--dark-primary);
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.2);
+}
+
+body.dark-mode .bible-search-input::placeholder {
+    color: var(--dark-text-muted);
+}
+
+body.dark-mode .bible-search-button {
+    background: linear-gradient(135deg, var(--dark-accent) 0%, #d97706 100%);
+    color: var(--dark-text-primary);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+}
+
+body.dark-mode .bible-search-button:hover {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+}
+
+/* Dark Mode Search Results */
+body.dark-mode .search-result-item {
+    background: var(--dark-bg-secondary);
+    border-color: var(--dark-border);
+    color: var(--dark-text-primary);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+}
+
+body.dark-mode .search-result-item:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+}
+
+body.dark-mode .highlight {
+    background: linear-gradient(120deg, #451a03 0%, #78350f 100%);
+    color: #fbbf24;
+}
+
+/* Dark Mode Status Messages */
+body.dark-mode .bible-loading-message {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+    color: var(--dark-text-secondary);
+}
+
+body.dark-mode .bible-error-message {
+    background: #450a0a;
+    border-color: #7f1d1d;
+    color: #fca5a5;
+}
+
+body.dark-mode .bible-select-prompt {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+    color: var(--dark-text-secondary);
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--background-light);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.dark-mode-toggle-button:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .dark-mode-toggle-button {
+    background: var(--dark-bg-secondary);
+    color: var(--dark-text-primary);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .dark-mode-toggle-button:hover {
+    border-color: var(--dark-border-hover);
+    box-shadow: 0 6px 10px -2px rgb(0 0 0 / 0.4);
+}
+
+/* Dark Mode Scrollbar */
+body.dark-mode ::-webkit-scrollbar {
+    width: 8px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--dark-bg-primary);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--dark-bg-tertiary);
+    border-radius: 4px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-border-hover);
+}
+
+/* Dark Mode Transitions */
+body.dark-mode * {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
