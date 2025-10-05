@@ -65,6 +65,7 @@ function get_bible_dictionary_data() {
 
 /**
  * [V4 - High Performance & Corrected Normalization] Finds and links dictionary terms in verse text.
+ * Updated: Works for all users (logged in and visitors)
  *
  * @param string $verse_text The raw Bible verse text.
  * @return string The processed text with interactive HTML links for dictionary terms.
@@ -244,7 +245,9 @@ if (!function_exists('my_bible_get_book_order_from_db')) {
                 $remaining_books_in_db = array_diff($books_actually_in_db_for_testament, $final_ordered_list_from_defined);
                 if ($remaining_books_in_db) { sort($remaining_books_in_db); $final_ordered_list_from_defined = array_merge($final_ordered_list_from_defined, $remaining_books_in_db); }
                 if (!empty($final_ordered_list_from_defined)) {
-                     $order_by_clause_parts[] = "FIELD(book, " . implode(', ', array_map(function($book) use ($wpdb) { return $wpdb->prepare("%s", $book); }, $final_ordered_list_from_defined)) . ")";
+                    // إصلاح أمني: استخدام طريقة آمنة لبناء FIELD query
+                    $placeholders = implode(', ', array_fill(0, count($final_ordered_list_from_defined), '%s'));
+                    $order_by_clause_parts[] = $wpdb->prepare("FIELD(book, $placeholders)", ...$final_ordered_list_from_defined);
                 }
             }
         }

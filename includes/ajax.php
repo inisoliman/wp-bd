@@ -1,4 +1,71 @@
 <?php
+// دالة AJAX للحصول على معاني كلمات الأصحاح - متاحة للجميع
+function my_bible_get_chapter_terms_ajax() {
+    check_ajax_referer('bible_ajax_nonce', 'nonce');
+    
+    if (!isset($_POST['book']) || empty(trim($_POST['book'])) || !isset($_POST['chapter']) || empty(trim($_POST['chapter']))) {
+        my_bible_ajax_error_response(__('اسم السفر ورقم الأصحاح مطلوبان.', 'my-bible-plugin'), 400, 'missing_book_chapter');
+        return;
+    }
+    
+    $book_name_input = sanitize_text_field(trim($_POST['book']));
+    $chapter_number = intval(trim($_POST['chapter']));
+    
+    if ($chapter_number <= 0) {
+        my_bible_ajax_error_response(__('رقم الأصحاح غير صالح.', 'my-bible-plugin'), 400, 'invalid_chapter_number');
+        return;
+    }
+    
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'bible_verses';
+    $verses = $wpdb->get_results($wpdb->prepare(
+        "SELECT text FROM $table_name WHERE book = %s AND chapter = %d ORDER BY verse ASC",
+        $book_name_input, $chapter_number
+    ));
+    
+    if ($wpdb->last_error) {
+        my_bible_ajax_error_response(__('حدث خطأ أثناء جلب الآيات.', 'my-bible-plugin'), 500, 'db_error_verses');
+        return;
+    }
+    
+    if (empty($verses)) {
+        my_bible_ajax_error_response(__('لم يتم العثور على آيات.', 'my-bible-plugin'), 404, 'no_verses_found');
+        return;
+    }
+    
+    // جمع كل النصوص لاستخراج الكلمات منها
+    $all_text = '';
+    foreach ($verses as $verse) {
+        $all_text .= ' ' . $verse->text;
+    }
+    
+    // الحصول على بيانات القاموس
+    if (!function_exists('get_bible_dictionary_data')) {
+        my_bible_ajax_error_response(__('دالة القاموس غير متوفرة.', 'my-bible-plugin'), 500, 'dictionary_function_missing');
+        return;
+    }
+    
+    $dictionary = get_bible_dictionary_data();
+    $found_terms = array();
+    
+    if (!empty($dictionary)) {
+        // البحث عن الكلمات الموجودة في النص
+        foreach ($dictionary as $normalized_term => $term_data) {
+            $original_term = $term_data['original'];
+            $definition = $term_data['definition'];
+            
+            // تحقق من وجود الكلمة في النص
+            if (mb_stripos($all_text, $original_term, 0, 'UTF-8') !== false) {
+                $found_terms[$original_term] = $definition;
+            }
+        }
+    }
+    
+    wp_send_json_success($found_terms);
+}
+
+add_action('wp_ajax_bible_get_chapter_terms', 'my_bible_get_chapter_terms_ajax');
+add_action('wp_ajax_nopriv_bible_get_chapter_terms', 'my_bible_get_chapter_terms_ajax');
 // منع الوصول المباشر
 if (!defined('ABSPATH')) {
     exit;

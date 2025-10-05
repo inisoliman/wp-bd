@@ -2,7 +2,7 @@
 /*
 Plugin Name: My Bible Plugin
 Description: عرض الكتاب المقدس مع بحث متقدم، قاموس مصطلحات، فلتر العهد، شواهد، تنقل محسن، دعم الوضع الليلي، قراءة صوتية، إنشاء صور، فهرس للأسفار، وخريطة موقع مخصصة.
-Version: 2.4.0
+Version: 2.4.1
 Author: اسمك (تم التحديث بواسطة Gemini)
 Text Domain: my-bible-plugin
 Domain Path: /languages
@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('MY_BIBLE_PLUGIN_VERSION', '2.4.0');
+define('MY_BIBLE_PLUGIN_VERSION', '2.4.1');
 define('MY_BIBLE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MY_BIBLE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -39,6 +39,8 @@ function my_bible_enqueue_scripts() {
         wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', array(), '5.15.4');
         wp_enqueue_style('my-bible-styles', MY_BIBLE_PLUGIN_URL . 'assets/css/bible-styles.css', array(), MY_BIBLE_PLUGIN_VERSION);
         wp_enqueue_script('my-bible-frontend', MY_BIBLE_PLUGIN_URL . 'assets/js/bible-frontend.js', array('jquery'), MY_BIBLE_PLUGIN_VERSION, true);
+        wp_enqueue_script('my-bible-dictionary-enhanced', MY_BIBLE_PLUGIN_URL . 'assets/js/bible-dictionary-enhanced.js', array('jquery', 'my-bible-frontend'), MY_BIBLE_PLUGIN_VERSION, true);
+        wp_enqueue_script('my-bible-dynamic-content', MY_BIBLE_PLUGIN_URL . 'assets/js/bible-dynamic-content.js', array('jquery', 'my-bible-frontend'), MY_BIBLE_PLUGIN_VERSION, true);
 
         $options = get_option('my_bible_options');
         $default_dark_mode = isset($options['default_dark_mode']) && $options['default_dark_mode'] === '1';
@@ -111,6 +113,9 @@ if (file_exists(MY_BIBLE_PLUGIN_DIR . 'includes/templates.php')) { require_once 
 if (file_exists(MY_BIBLE_PLUGIN_DIR . 'includes/shortcodes.php')) { require_once MY_BIBLE_PLUGIN_DIR . 'includes/shortcodes.php'; }
 if (file_exists(MY_BIBLE_PLUGIN_DIR . 'includes/ajax.php')) { require_once MY_BIBLE_PLUGIN_DIR . 'includes/ajax.php'; }
 if (file_exists(MY_BIBLE_PLUGIN_DIR . 'includes/sitemap.php')) { require_once MY_BIBLE_PLUGIN_DIR . 'includes/sitemap.php'; }
+if (file_exists(MY_BIBLE_PLUGIN_DIR . 'includes/seo.php')) { require_once MY_BIBLE_PLUGIN_DIR . 'includes/seo.php'; }
+if (file_exists(MY_BIBLE_PLUGIN_DIR . 'includes/database-optimization.php')) { require_once MY_BIBLE_PLUGIN_DIR . 'includes/database-optimization.php'; }
+if (file_exists(MY_BIBLE_PLUGIN_DIR . 'includes/error-handling.php')) { require_once MY_BIBLE_PLUGIN_DIR . 'includes/error-handling.php'; }
 
 function my_bible_create_tables() {
     global $wpdb;
@@ -126,6 +131,19 @@ function my_bible_create_tables() {
     dbDelta($sql_dictionary);
 }
 register_activation_hook(__FILE__, 'my_bible_create_tables');
+
+// تحسين الجداول عند تحديث الإضافة
+function my_bible_plugin_upgrade_check() {
+    $installed_version = get_option('my_bible_plugin_version', '0');
+    if (version_compare($installed_version, MY_BIBLE_PLUGIN_VERSION, '<')) {
+        // تشغيل تحسينات قاعدة البيانات
+        if (function_exists('my_bible_optimize_existing_tables')) {
+            my_bible_optimize_existing_tables();
+        }
+        update_option('my_bible_plugin_version', MY_BIBLE_PLUGIN_VERSION);
+    }
+}
+add_action('plugins_loaded', 'my_bible_plugin_upgrade_check');
 
 function my_bible_create_pages() { 
     if (!get_page_by_path('bible')) {

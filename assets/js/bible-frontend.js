@@ -92,7 +92,8 @@ jQuery(document).ready(function($) {
 
     function removeArabicTashkeel(text) {
         if (typeof text !== 'string') return '';
-        return text.replace(/[\u064B-\u065F\u0670]/g, '');
+        // إزالة شاملة لجميع رموز التشكيل العربية
+        return text.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u08D4-\u08E1\u08E3-\u08FF\u0617-\u061A]/g, '');
     }
     
     function setTashkeelState(container, showTashkeel) {
